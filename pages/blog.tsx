@@ -45,7 +45,7 @@ const Blog: React.FC<BlogProps> = ({ posts }) => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Box sx={{ width: "100%", py: 4, minHeight: "100vh" }}>
       <Typography
         variant="h2"
         component="h1"
@@ -198,7 +198,7 @@ const Blog: React.FC<BlogProps> = ({ posts }) => {
           ))}
         </Grid>
       )}
-    </Container>
+    </Box>
   );
 };
 

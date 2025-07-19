@@ -40,48 +40,50 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
     if (!container) return;
 
     let isScrolling = false;
-    let scrollTimeout: NodeJS.Timeout;
 
     const handleScroll = (e: WheelEvent) => {
-      if (isScrolling) return;
-
       const scrollTop = container.scrollTop;
       const containerHeight = container.clientHeight;
-      const isAtTop = scrollTop < containerHeight / 2;
-      const isAtBottom = scrollTop >= containerHeight / 2;
 
-      // Add a small debounce to prevent rapid scrolling
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        isScrolling = false;
-      }, 1000);
+      const isAtVeryTop = scrollTop === 0;
+      const isNearTopOfBlogSection =
+        scrollTop > containerHeight * 0.8 && scrollTop <= containerHeight * 1.1;
 
-      if (!isScrolling) {
+      // Minimal intervention - only for major section transitions
+      if (e.deltaY > 0 && isAtVeryTop && !isScrolling) {
+        // Scrolling down from very top - go to blog section
+        e.preventDefault();
         isScrolling = true;
 
-        if (e.deltaY > 0 && isAtTop) {
-          // Scrolling down from hero section
-          e.preventDefault();
-          document.getElementById("blog-section")?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        } else if (e.deltaY < 0 && isAtBottom) {
-          // Scrolling up from blog section
-          e.preventDefault();
-          container.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
-        }
+        document.getElementById("blog-section")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+        setTimeout(() => {
+          isScrolling = false;
+        }, 500);
+      } else if (e.deltaY < 0 && isNearTopOfBlogSection && !isScrolling) {
+        // Scrolling up near top of blog section - go back to hero
+        e.preventDefault();
+        isScrolling = true;
+
+        container.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+
+        setTimeout(() => {
+          isScrolling = false;
+        }, 500);
       }
+      // Allow normal scrolling in all other cases
     };
 
     container.addEventListener("wheel", handleScroll, { passive: false });
 
     return () => {
       container.removeEventListener("wheel", handleScroll);
-      clearTimeout(scrollTimeout);
     };
   }, []);
 
@@ -106,7 +108,7 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
       sx={{
         height: "100vh",
         overflowY: "auto",
-        scrollSnapType: "y mandatory",
+        scrollSnapType: "y proximity",
         scrollBehavior: "smooth",
       }}
     >
@@ -132,16 +134,17 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
       <Box
         id="blog-section"
         sx={{
-          scrollSnapAlign: "start",
           py: 8,
           background:
             theme.palette.mode === "dark"
               ? "linear-gradient(180deg, rgba(16, 20, 40, 1) 0%, rgba(10, 15, 30, 1) 100%)"
               : "linear-gradient(180deg, rgba(250, 250, 250, 1) 0%, rgba(245, 245, 245, 1) 100%)",
           minHeight: "100vh",
+          // Allow the section to expand beyond viewport height when needed
+          height: "auto",
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ height: "auto" }}>
           {/* Section Header */}
           <Box textAlign="center" mb={6}>
             <Typography

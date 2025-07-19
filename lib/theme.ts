@@ -42,7 +42,34 @@ export const lightTheme = createTheme({
         body: {
           background: "#f9fafb",
           position: "relative",
-          overflow: "hidden",
+          overflow: "auto", // Change from hidden to auto to show scrollbars
+        },
+        // Custom scrollbar styles for light theme
+        "::-webkit-scrollbar": {
+          width: "8px",
+          height: "8px",
+        },
+        "::-webkit-scrollbar-track": {
+          background: "#f9fafb",
+          borderRadius: "4px",
+        },
+        "::-webkit-scrollbar-thumb": {
+          background: "#d1d5db",
+          borderRadius: "4px",
+          transition: "background-color 0.2s ease",
+          "&:hover": {
+            background: "#9ca3af",
+          },
+          "&:active": {
+            background: "#6b7280",
+          },
+        },
+        "::-webkit-scrollbar-corner": {
+          background: "#f9fafb",
+        },
+        "*": {
+          scrollbarWidth: "thin",
+          scrollbarColor: "#d1d5db #f9fafb",
         },
         "@keyframes twinkle": {
           "0%": {
@@ -137,7 +164,34 @@ export const darkTheme = createTheme({
         body: {
           background: "#111827",
           position: "relative",
-          overflow: "hidden",
+          overflow: "auto", // Change from hidden to auto to show scrollbars
+        },
+        // Custom scrollbar styles for dark theme
+        "::-webkit-scrollbar": {
+          width: "8px",
+          height: "8px",
+        },
+        "::-webkit-scrollbar-track": {
+          background: "#1f2937",
+          borderRadius: "4px",
+        },
+        "::-webkit-scrollbar-thumb": {
+          background: "#4b5563",
+          borderRadius: "4px",
+          transition: "background-color 0.2s ease",
+          "&:hover": {
+            background: "#6b7280",
+          },
+          "&:active": {
+            background: "#9ca3af",
+          },
+        },
+        "::-webkit-scrollbar-corner": {
+          background: "#1f2937",
+        },
+        "*": {
+          scrollbarWidth: "thin",
+          scrollbarColor: "#4b5563 #1f2937",
         },
       },
     },

@@ -158,9 +158,10 @@ export const useAuthorStore = create<AuthorState>()(
 // Hook to check if author name is set
 export const useAuthorName = () => {
   const { authorName, isInitialized } = useAuthorStore();
+
   return {
     authorName: authorName || "Anonymous",
-    hasAuthorName: Boolean(authorName),
+    hasAuthorName: Boolean(authorName) && authorName !== "Anonymous",
     isInitialized,
   };
 };

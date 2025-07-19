@@ -26,7 +26,13 @@ const Layout: React.FC<LayoutProps> = ({
   const theme = useTheme();
 
   return (
-    <Box sx={{ flexGrow: 1, minHeight: "100vh" }}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <FloatingParticles />
       <AppBar
         position="static"
@@ -68,10 +74,11 @@ const Layout: React.FC<LayoutProps> = ({
       </AppBar>
 
       <Container
-        maxWidth="md"
+        maxWidth="lg"
         sx={{
           mt: 4,
           mb: 4,
+          flexGrow: 1, // Allow container to grow to fill available space
         }}
       >
         {children}
