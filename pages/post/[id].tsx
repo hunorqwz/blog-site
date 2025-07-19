@@ -3,6 +3,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { Typography, Paper, Box, Button, Divider } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { prisma } from "../../lib/prisma";
 
 interface Post {
@@ -17,6 +18,12 @@ interface PostPageProps {
 }
 
 const PostPage: React.FC<PostPageProps> = ({ post }) => {
+  const router = useRouter();
+
+  const handleBackToPosts = () => {
+    router.push("/#blog-section");
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -108,9 +115,8 @@ const PostPage: React.FC<PostPageProps> = ({ post }) => {
     <Box>
       <Button
         startIcon={<ArrowBack />}
-        component={Link}
-        href="/"
-        sx={{ mb: 3 }}
+        onClick={handleBackToPosts}
+        sx={{ mb: 3, cursor: "pointer" }}
       >
         Back to Posts
       </Button>
