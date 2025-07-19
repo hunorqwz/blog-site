@@ -52,7 +52,15 @@ const AdBox: React.FC<AdBoxProps> = ({
       }}
     >
       <CardActionArea onClick={onClick} sx={{ height: "100%", p: 2 }}>
-        <CardContent sx={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <CardContent
+          sx={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Avatar
             sx={{
               width: 48,
@@ -157,13 +165,42 @@ const AdsPage: React.FC = () => {
 
   // Generate 100 dummy ads
   const generateAds = (): AdBoxProps[] => {
-    const categories = ["Tech", "Finance", "Health", "Travel", "Food", "Fashion", "Sports", "Education"];
+    const categories = [
+      "Tech",
+      "Finance",
+      "Health",
+      "Travel",
+      "Food",
+      "Fashion",
+      "Sports",
+      "Education",
+    ];
     const companies = [
-      "TechCorp", "DataFlow", "CloudSync", "InnovateLab", "DigitalEdge", 
-      "SmartSolutions", "FutureTech", "WebWorks", "CodeCraft", "DevTools",
-      "SafeBank", "MoneyWise", "InvestPro", "CreditPlus", "PaySecure",
-      "HealthFirst", "WellnessHub", "MedTech", "FitLife", "VitalCare",
-      "TravelEase", "AdventureTime", "JourneyPlus", "ExploreWorld", "VoyageHub"
+      "TechCorp",
+      "DataFlow",
+      "CloudSync",
+      "InnovateLab",
+      "DigitalEdge",
+      "SmartSolutions",
+      "FutureTech",
+      "WebWorks",
+      "CodeCraft",
+      "DevTools",
+      "SafeBank",
+      "MoneyWise",
+      "InvestPro",
+      "CreditPlus",
+      "PaySecure",
+      "HealthFirst",
+      "WellnessHub",
+      "MedTech",
+      "FitLife",
+      "VitalCare",
+      "TravelEase",
+      "AdventureTime",
+      "JourneyPlus",
+      "ExploreWorld",
+      "VoyageHub",
     ];
 
     return Array.from({ length: 100 }, (_, index) => {
@@ -189,7 +226,10 @@ const AdsPage: React.FC = () => {
     <>
       <Head>
         <title>Sponsored Content - Blog Site</title>
-        <meta name="description" content="Discover quality products and services from our trusted partners and sponsors." />
+        <meta
+          name="description"
+          content="Discover quality products and services from our trusted partners and sponsors."
+        />
         <meta name="robots" content="index, follow" />
         {/* AdSense script - uncomment for real implementation */}
         {/*
@@ -266,7 +306,8 @@ const AdsPage: React.FC = () => {
         {/* Disclaimer */}
         <Box sx={{ mt: 4, textAlign: "center" }}>
           <Typography variant="caption" color="text.secondary">
-            Sponsored content helps support our blog. All advertisements are clearly marked and follow Google AdSense policies.
+            Sponsored content helps support our blog. All advertisements are
+            clearly marked and follow Google AdSense policies.
           </Typography>
         </Box>
       </Container>

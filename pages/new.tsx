@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   Typography,
@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { ArrowBack, Save } from "@mui/icons-material";
 import Link from "next/link";
+import { useAuthorStore, useAuthorName } from "../store/authorStore";
+import AuthorNameDialog from "../components/AuthorNameDialog";
 
 const NewPost: React.FC = () => {
   const router = useRouter();
@@ -19,6 +21,20 @@ const NewPost: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const { authorName, hasAuthorName, isInitialized } = useAuthorName();
+  const { initializeAuthor } = useAuthorStore();
+  const [showAuthorDialog, setShowAuthorDialog] = useState(false);
+
+  useEffect(() => {
+    // Initialize the author store on mount
+    initializeAuthor();
+
+    // Check if we need to prompt for author name after initialization
+    if (isInitialized && !hasAuthorName) {
+      setShowAuthorDialog(true);
+    }
+  }, [isInitialized, hasAuthorName, initializeAuthor]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +53,11 @@ const NewPost: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, content }),
+        body: JSON.stringify({
+          title,
+          content,
+          author: authorName,
+        }),
       });
 
       if (!response.ok) {
@@ -144,6 +164,13 @@ const NewPost: React.FC = () => {
           Post created successfully! Redirecting...
         </Alert>
       </Snackbar>
+
+      {/* Author Name Dialog for first-time users */}
+      <AuthorNameDialog
+        open={showAuthorDialog}
+        onClose={() => setShowAuthorDialog(false)}
+        isFirstTime={true}
+      />
     </Box>
   );
 };

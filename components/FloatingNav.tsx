@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Fab, Tooltip, AppBar, Toolbar, Button } from "@mui/material";
 import {
   Brightness4,
@@ -7,10 +7,13 @@ import {
   Create,
   Article,
   Campaign,
+  Person,
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import AuthorNameDialog from "./AuthorNameDialog";
+import { useAuthorName } from "../store/authorStore";
 
 interface FloatingNavProps {
   toggleDarkMode: () => void;
@@ -23,6 +26,8 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
 }) => {
   const theme = useTheme();
   const router = useRouter();
+  const { authorName } = useAuthorName();
+  const [showAuthorDialog, setShowAuthorDialog] = useState(false);
 
   const handleHomeClick = () => {
     if (router.pathname === "/") {
@@ -103,6 +108,22 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
             >
               Write
             </Button>
+            <Tooltip title={`Author: ${authorName}`}>
+              <Button
+                startIcon={<Person />}
+                onClick={() => setShowAuthorDialog(true)}
+                sx={{
+                  color: theme.palette.text.primary,
+                  "&:hover": {
+                    backgroundColor: "rgba(79, 195, 247, 0.1)",
+                  },
+                }}
+              >
+                {authorName.length > 10
+                  ? `${authorName.substring(0, 10)}...`
+                  : authorName}
+              </Button>
+            </Tooltip>
           </Box>
         </Toolbar>
       </AppBar>
@@ -147,6 +168,12 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
           </Fab>
         </Tooltip>
       </Box>
+
+      {/* Author Name Dialog */}
+      <AuthorNameDialog
+        open={showAuthorDialog}
+        onClose={() => setShowAuthorDialog(false)}
+      />
     </>
   );
 };

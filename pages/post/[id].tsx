@@ -10,6 +10,7 @@ interface Post {
   id: number;
   title: string;
   content: string;
+  author: string;
   createdAt: string;
 }
 
@@ -140,7 +141,7 @@ const PostPage: React.FC<PostPageProps> = ({ post }) => {
           color="text.secondary"
           sx={{ mb: 3, display: "block" }}
         >
-          Published on {formatDate(post.createdAt)}
+          By {post.author} • Published on {formatDate(post.createdAt)}
         </Typography>
 
         <Divider sx={{ mb: 3 }} />

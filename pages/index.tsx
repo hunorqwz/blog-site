@@ -21,6 +21,7 @@ interface Post {
   id: number;
   title: string;
   content: string;
+  author: string;
   createdAt: string;
 }
 
@@ -281,7 +282,7 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
                           fontWeight: 500,
                         }}
                       >
-                        {formatDate(post.createdAt)}
+                        By {post.author} • {formatDate(post.createdAt)}
                       </Typography>
                     </CardContent>
                     <CardActions sx={{ p: 3, pt: 0 }}>

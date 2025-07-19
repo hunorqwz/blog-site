@@ -14,5 +14,6 @@ model Post {
   id        Int      @id @default(autoincrement())
   title     String
   content   String
+  author    String   @default("Anonymous")
   createdAt DateTime @default(now())
 }

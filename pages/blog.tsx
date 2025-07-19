@@ -18,6 +18,7 @@ interface Post {
   id: number;
   title: string;
   content: string;
+  author: string;
   createdAt: string;
 }
 
@@ -152,15 +153,23 @@ const Blog: React.FC<BlogProps> = ({ posts }) => {
                   >
                     {getExcerpt(post.content)}
                   </Typography>
-                  <Typography
-                    variant="caption"
+                  <Box
                     sx={{
-                      color: theme.palette.text.secondary,
-                      fontWeight: 500,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
                   >
-                    {formatDate(post.createdAt)}
-                  </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: theme.palette.text.secondary,
+                        fontWeight: 500,
+                      }}
+                    >
+                      By {post.author} • {formatDate(post.createdAt)}
+                    </Typography>
+                  </Box>
                 </CardContent>
                 <CardActions sx={{ p: 3, pt: 0 }}>
                   <Button

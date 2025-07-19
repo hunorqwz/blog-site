@@ -4,10 +4,17 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { lightTheme, darkTheme } from "../lib/theme";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
+import { useAuthorStore } from "../store/authorStore";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const router = useRouter();
+
+  // Initialize Zustand store on client side
+  useEffect(() => {
+    // This ensures hydration happens only on client side
+    useAuthorStore.persist.rehydrate();
+  }, []);
 
   // Load theme preference from localStorage on client side
   useEffect(() => {

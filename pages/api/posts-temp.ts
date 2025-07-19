@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../lib/prisma";
 
 interface CreatePostRequest {
   title: string;
@@ -21,13 +20,14 @@ export default async function handler(
           .json({ error: "Title and content are required" });
       }
 
-      const post = await prisma.post.create({
-        data: {
-          title: title.trim(),
-          content: content.trim(),
-          author: author || "Anonymous",
-        },
-      });
+      // For now, just return a mock post to test the frontend
+      const post = {
+        id: Math.floor(Math.random() * 1000),
+        title: title.trim(),
+        content: content.trim(),
+        author: author || "Anonymous",
+        createdAt: new Date().toISOString(),
+      };
 
       res.status(201).json(post);
     } catch (error) {
