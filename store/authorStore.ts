@@ -98,9 +98,12 @@ interface AuthorState {
   authorName: string;
   isInitialized: boolean;
   hideWelcomeDialog: boolean;
+  hasCompletedWelcome: boolean;
+  _hasHydrated: boolean;
   setAuthorName: (name: string) => void;
   setHideWelcomeDialog: (hide: boolean) => void;
   resetWelcomeDialog: () => void;
+  clearStorage: () => void;
   initializeAuthor: () => void;
   updatePostsAuthor: (newName: string) => Promise<void>;
 }
@@ -111,9 +114,15 @@ export const useAuthorStore = create<AuthorState>()(
       authorName: "",
       isInitialized: false,
       hideWelcomeDialog: false,
+      hasCompletedWelcome: false,
+      _hasHydrated: false,
 
       setAuthorName: (name: string) => {
-        set({ authorName: name, isInitialized: true });
+        set({
+          authorName: name,
+          isInitialized: true,
+          hasCompletedWelcome: true,
+        });
       },
 
       setHideWelcomeDialog: (hide: boolean) => {
@@ -122,6 +131,17 @@ export const useAuthorStore = create<AuthorState>()(
 
       resetWelcomeDialog: () => {
         set({ hideWelcomeDialog: false });
+      },
+
+      clearStorage: () => {
+        console.log("Clearing storage");
+        set({
+          authorName: "",
+          isInitialized: false,
+          hideWelcomeDialog: false,
+          hasCompletedWelcome: false,
+          _hasHydrated: true,
+        });
       },
 
       initializeAuthor: () => {
@@ -159,18 +179,28 @@ export const useAuthorStore = create<AuthorState>()(
     {
       name: "author-storage",
       storage: createJSONStorage(() => createIndexedDBStorage()),
-      skipHydration: true,
+      onRehydrateStorage: () => (state) => {
+        if (state) state._hasHydrated = true;
+      },
     }
   )
 );
 
 export const useAuthorName = () => {
-  const { authorName, isInitialized, hideWelcomeDialog } = useAuthorStore();
+  const {
+    authorName,
+    isInitialized,
+    hideWelcomeDialog,
+    hasCompletedWelcome,
+    _hasHydrated,
+  } = useAuthorStore();
 
   return {
     authorName: authorName || "Anonymous",
     hasAuthorName: Boolean(authorName),
     hideWelcomeDialog,
+    hasCompletedWelcome,
     isInitialized,
+    _hasHydrated,
   };
 };

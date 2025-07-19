@@ -10,16 +10,16 @@ import FirstTimeVisitorDialog from "../components/FirstTimeVisitorDialog";
 export default function App({ Component, pageProps }: AppProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showFirstTimeDialog, setShowFirstTimeDialog] = useState(false);
-  const [hasShownDialogThisSession, setHasShownDialogThisSession] =
-    useState(false);
   const router = useRouter();
 
-  const { isInitialized, hasAuthorName, hideWelcomeDialog } = useAuthorName();
+  const {
+    isInitialized,
+    hasAuthorName,
+    hideWelcomeDialog,
+    hasCompletedWelcome,
+    _hasHydrated,
+  } = useAuthorName();
   const { initializeAuthor } = useAuthorStore();
-
-  useEffect(() => {
-    useAuthorStore.persist.rehydrate();
-  }, []);
 
   useEffect(() => {
     initializeAuthor();
@@ -27,24 +27,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (
+      _hasHydrated &&
       isInitialized &&
-      !hasAuthorName &&
-      !hasShownDialogThisSession &&
+      !hasCompletedWelcome &&
       !hideWelcomeDialog
     ) {
       const timer = setTimeout(() => {
         setShowFirstTimeDialog(true);
-        setHasShownDialogThisSession(true);
       }, 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [
-    isInitialized,
-    hasAuthorName,
-    hasShownDialogThisSession,
-    hideWelcomeDialog,
-  ]);
+  }, [_hasHydrated, isInitialized, hasCompletedWelcome, hideWelcomeDialog]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("darkMode");
