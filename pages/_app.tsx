@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
     useState(false);
   const router = useRouter();
 
-  const { isInitialized, hasAuthorName } = useAuthorName();
+  const { isInitialized, hasAuthorName, hideWelcomeDialog } = useAuthorName();
   const { initializeAuthor } = useAuthorStore();
 
   // Initialize Zustand store on client side
@@ -31,7 +31,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // Check if we need to show the first-time visitor dialog
   useEffect(() => {
-    if (isInitialized && !hasAuthorName && !hasShownDialogThisSession) {
+    if (
+      isInitialized &&
+      !hasAuthorName &&
+      !hasShownDialogThisSession &&
+      !hideWelcomeDialog
+    ) {
       // Add a small delay to ensure the page has loaded
       const timer = setTimeout(() => {
         setShowFirstTimeDialog(true);
@@ -40,7 +45,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
       return () => clearTimeout(timer);
     }
-  }, [isInitialized, hasAuthorName, hasShownDialogThisSession]);
+  }, [
+    isInitialized,
+    hasAuthorName,
+    hasShownDialogThisSession,
+    hideWelcomeDialog,
+  ]);
 
   // Load theme preference from localStorage on client side
   useEffect(() => {

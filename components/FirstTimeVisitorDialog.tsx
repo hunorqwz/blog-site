@@ -9,6 +9,8 @@ import {
   Box,
   Typography,
   Divider,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { Person, WavingHand } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
@@ -24,9 +26,10 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
   onClose,
 }) => {
   const theme = useTheme();
-  const { setAuthorName } = useAuthorStore();
+  const { setAuthorName, setHideWelcomeDialog } = useAuthorStore();
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [hideDialogChecked, setHideDialogChecked] = useState(false);
 
   const handleSetName = () => {
     const trimmedName = name.trim();
@@ -42,11 +45,17 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
     }
 
     setAuthorName(trimmedName);
+    if (hideDialogChecked) {
+      setHideWelcomeDialog(true);
+    }
     onClose();
   };
 
   const handleContinueAnonymously = () => {
     setAuthorName("Anonymous");
+    if (hideDialogChecked) {
+      setHideWelcomeDialog(true);
+    }
     onClose();
   };
 
@@ -95,6 +104,10 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
           overflow: "auto",
           display: "flex",
           flexDirection: "column",
+          paddingTop: "24px !important", // Force top padding
+          paddingBottom: "24px !important", // Force bottom padding
+          paddingLeft: "24px !important", // Force left padding
+          paddingRight: "24px !important", // Force right padding
           // Custom scrollbar styling to match app theme
           "&::-webkit-scrollbar": {
             width: "6px",
@@ -118,7 +131,24 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
         }}
       >
         <Box sx={{ textAlign: "center", mb: 3 }}>
-          <Typography variant="body1" color="text.secondary" paragraph>
+          <Typography
+            variant="body1"
+            paragraph
+            sx={{
+              background:
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(135deg, #60a5fa 0%, #3b82f6 25%, #06b6d4 50%, #10b981 75%, #22c55e 100%)"
+                  : "linear-gradient(135deg, #1e40af 0%, #1d4ed8 25%, #0891b2 50%, #059669 75%, #16a34a 100%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              textFillColor: "transparent",
+              fontWeight: 600,
+              fontSize: "1.1rem",
+              lineHeight: 1.6,
+              letterSpacing: "0.01em",
+            }}
+          >
             We're excited to have you here! To personalize your experience, you
             can set your author name for when you write posts.
           </Typography>
@@ -169,6 +199,35 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
             {error}
           </Alert>
         )}
+
+        {/* Checkbox to hide welcome dialog */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={hideDialogChecked}
+              onChange={(e) => setHideDialogChecked(e.target.checked)}
+              size="small"
+              sx={{
+                color: theme.palette.primary.main,
+                "&.Mui-checked": {
+                  color: theme.palette.primary.main,
+                },
+              }}
+            />
+          }
+          label={
+            <Typography variant="body2" color="text.secondary">
+              Don't show this welcome message again
+            </Typography>
+          }
+          sx={{
+            mb: 1,
+            alignSelf: "flex-start",
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.875rem",
+            },
+          }}
+        />
 
         {/* Buttons moved inside DialogContent for scrolling */}
         <Box

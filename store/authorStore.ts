@@ -98,7 +98,10 @@ const createIndexedDBStorage = () => {
 interface AuthorState {
   authorName: string;
   isInitialized: boolean;
+  hideWelcomeDialog: boolean;
   setAuthorName: (name: string) => void;
+  setHideWelcomeDialog: (hide: boolean) => void;
+  resetWelcomeDialog: () => void;
   initializeAuthor: () => void;
   updatePostsAuthor: (newName: string) => Promise<void>;
 }
@@ -109,9 +112,18 @@ export const useAuthorStore = create<AuthorState>()(
     (set, get) => ({
       authorName: "",
       isInitialized: false,
+      hideWelcomeDialog: false,
 
       setAuthorName: (name: string) => {
         set({ authorName: name, isInitialized: true });
+      },
+
+      setHideWelcomeDialog: (hide: boolean) => {
+        set({ hideWelcomeDialog: hide });
+      },
+
+      resetWelcomeDialog: () => {
+        set({ hideWelcomeDialog: false });
       },
 
       initializeAuthor: () => {
@@ -157,11 +169,12 @@ export const useAuthorStore = create<AuthorState>()(
 
 // Hook to check if author name is set
 export const useAuthorName = () => {
-  const { authorName, isInitialized } = useAuthorStore();
+  const { authorName, isInitialized, hideWelcomeDialog } = useAuthorStore();
 
   return {
     authorName: authorName || "Anonymous",
     hasAuthorName: Boolean(authorName) && authorName !== "Anonymous",
+    hideWelcomeDialog,
     isInitialized,
   };
 };
