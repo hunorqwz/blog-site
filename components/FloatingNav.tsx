@@ -6,6 +6,7 @@ import {
   Home,
   Create,
   Article,
+  Campaign,
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/router";
@@ -75,6 +76,19 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
               }}
             >
               Blog
+            </Button>
+            <Button
+              component={Link}
+              href="/ads"
+              startIcon={<Campaign />}
+              sx={{
+                color: theme.palette.text.primary,
+                "&:hover": {
+                  backgroundColor: "rgba(79, 195, 247, 0.1)",
+                },
+              }}
+            >
+              Ads
             </Button>
             <Button
               component={Link}
