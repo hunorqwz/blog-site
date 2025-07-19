@@ -36,7 +36,6 @@ const PostPage: React.FC<PostPageProps> = ({ post }) => {
   };
 
   const formatContent = (content: string) => {
-    // Simple markdown-like formatting
     return content.split("\n").map((line, index) => {
       if (line.startsWith("# ")) {
         return (

@@ -35,6 +35,12 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
   const theme = useTheme();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  const formatExcerpt = (content: string, maxLength: number = 200) => {
+    const plainText = content.replace(/^#+ /gm, "").replace(/\n+/g, " ");
+    if (plainText.length <= maxLength) return plainText;
+    return plainText.slice(0, maxLength) + "...";
+  };
+
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -49,9 +55,7 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
       const isNearTopOfBlogSection =
         scrollTop > containerHeight * 0.8 && scrollTop <= containerHeight * 1.1;
 
-      // Minimal intervention - only for major section transitions
       if (e.deltaY > 0 && isAtVeryTop && !isScrolling) {
-        // Scrolling down from very top - go to blog section
         e.preventDefault();
         isScrolling = true;
 
@@ -64,7 +68,6 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
           isScrolling = false;
         }, 500);
       } else if (e.deltaY < 0 && isNearTopOfBlogSection && !isScrolling) {
-        // Scrolling up near top of blog section - go back to hero
         e.preventDefault();
         isScrolling = true;
 
@@ -77,7 +80,6 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
           isScrolling = false;
         }, 500);
       }
-      // Allow normal scrolling in all other cases
     };
 
     container.addEventListener("wheel", handleScroll, { passive: false });
@@ -112,7 +114,6 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
         scrollBehavior: "smooth",
       }}
     >
-      {/* Floating Navigation */}
       {toggleDarkMode && (
         <FloatingNav
           toggleDarkMode={toggleDarkMode}
@@ -120,7 +121,6 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
         />
       )}
 
-      {/* Welcome/Hero Section */}
       <Box
         sx={{
           scrollSnapAlign: "start",
@@ -140,12 +140,10 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
               ? "linear-gradient(180deg, rgba(16, 20, 40, 1) 0%, rgba(10, 15, 30, 1) 100%)"
               : "linear-gradient(180deg, rgba(250, 250, 250, 1) 0%, rgba(245, 245, 245, 1) 100%)",
           minHeight: "100vh",
-          // Allow the section to expand beyond viewport height when needed
           height: "auto",
         }}
       >
         <Container maxWidth="lg" sx={{ height: "auto" }}>
-          {/* Section Header */}
           <Box textAlign="center" mb={6}>
             <Typography
               variant="h2"
@@ -187,7 +185,6 @@ const Home: React.FC<HomeProps> = ({ posts, toggleDarkMode, isDarkMode }) => {
             />
           </Box>
 
-          {/* Blog Posts Grid */}
           {posts.length === 0 ? (
             <Box textAlign="center" py={8}>
               <Typography
@@ -337,7 +334,7 @@ export const getStaticProps: GetStaticProps = async () => {
         createdAt: post.createdAt.toISOString(),
       })),
     },
-    revalidate: 60, // Revalidate every 60 seconds
+    revalidate: 60,
   };
 };
 

@@ -27,10 +27,8 @@ const NewPost: React.FC = () => {
   const [showAuthorDialog, setShowAuthorDialog] = useState(false);
 
   useEffect(() => {
-    // Initialize the author store on mount
     initializeAuthor();
 
-    // Check if we need to prompt for author name after initialization
     if (isInitialized && !hasAuthorName) {
       setShowAuthorDialog(true);
     }
@@ -67,7 +65,6 @@ const NewPost: React.FC = () => {
       const newPost = await response.json();
       setSuccess(true);
 
-      // Redirect to the new post after a short delay
       setTimeout(() => {
         router.push(`/post/${newPost.id}`);
       }, 1500);
@@ -165,7 +162,6 @@ const NewPost: React.FC = () => {
         </Alert>
       </Snackbar>
 
-      {/* Author Name Dialog for first-time users */}
       <AuthorNameDialog
         open={showAuthorDialog}
         onClose={() => setShowAuthorDialog(false)}

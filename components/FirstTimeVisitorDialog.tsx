@@ -60,7 +60,6 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
   };
 
   const handleClose = (event: any, reason: string) => {
-    // Prevent closing by clicking outside or pressing escape
     if (reason === "backdropClick" || reason === "escapeKeyDown") {
       return;
     }
@@ -75,7 +74,7 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
       disableEscapeKeyDown
       sx={{
         "& .MuiDialog-paper": {
-          maxHeight: "80vh", // Limit dialog height
+          maxHeight: "80vh",
           display: "flex",
           flexDirection: "column",
         },
@@ -88,7 +87,7 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
           gap: 1,
           textAlign: "center",
           pb: 1,
-          flexShrink: 0, // Prevent title from shrinking
+          flexShrink: 0,
           borderBottom: `1px solid ${theme.palette.divider}`,
         }}
       >
@@ -104,11 +103,10 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
           overflow: "auto",
           display: "flex",
           flexDirection: "column",
-          paddingTop: "24px !important", // Force top padding
-          paddingBottom: "24px !important", // Force bottom padding
-          paddingLeft: "24px !important", // Force left padding
-          paddingRight: "24px !important", // Force right padding
-          // Custom scrollbar styling to match app theme
+          paddingTop: "24px !important",
+          paddingBottom: "24px !important",
+          paddingLeft: "24px !important",
+          paddingRight: "24px !important",
           "&::-webkit-scrollbar": {
             width: "6px",
           },
@@ -122,7 +120,6 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
               background: theme.palette.mode === "dark" ? "#6b7280" : "#9ca3af",
             },
           },
-          // Firefox scrollbar
           scrollbarWidth: "thin",
           scrollbarColor:
             theme.palette.mode === "dark"
@@ -200,7 +197,6 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
           </Alert>
         )}
 
-        {/* Checkbox to hide welcome dialog */}
         <FormControlLabel
           control={
             <Checkbox
@@ -229,7 +225,6 @@ const FirstTimeVisitorDialog: React.FC<FirstTimeVisitorDialogProps> = ({
           }}
         />
 
-        {/* Buttons moved inside DialogContent for scrolling */}
         <Box
           sx={{
             mt: "auto",

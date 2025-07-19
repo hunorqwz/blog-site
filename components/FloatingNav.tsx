@@ -31,19 +31,16 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
 
   const handleHomeClick = () => {
     if (router.pathname === "/") {
-      // If on homepage, scroll to blog section
       document
         .getElementById("blog-section")
         ?.scrollIntoView({ behavior: "smooth" });
     } else {
-      // If on another page, navigate to homepage with blog section anchor
       router.push("/#blog-section");
     }
   };
 
   return (
     <>
-      {/* Floating Top Navigation */}
       <AppBar
         position="fixed"
         sx={{
@@ -117,18 +114,15 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
                   "&:hover": {
                     backgroundColor: "rgba(79, 195, 247, 0.1)",
                   },
-                  minWidth: "auto", // Allow button to be smaller without text
-                  px: 1, // Reduce padding since there's no text
+                  minWidth: "auto",
+                  px: 1,
                 }}
-              >
-                {/* Username text removed - only icon is shown */}
-              </Button>
+              ></Button>
             </Tooltip>
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* Floating Dark Mode Toggle */}
       <Box
         sx={{
           position: "fixed",
@@ -169,7 +163,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
         </Tooltip>
       </Box>
 
-      {/* Author Name Dialog */}
       <AuthorNameDialog
         open={showAuthorDialog}
         onClose={() => setShowAuthorDialog(false)}

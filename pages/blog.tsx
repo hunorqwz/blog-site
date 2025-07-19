@@ -38,7 +38,6 @@ const Blog: React.FC<BlogProps> = ({ posts }) => {
   };
 
   const getExcerpt = (content: string, maxLength = 200) => {
-    // Remove markdown headers and get plain text
     const plainText = content.replace(/^#+ /gm, "").replace(/\n+/g, " ");
     if (plainText.length <= maxLength) return plainText;
     return plainText.slice(0, maxLength) + "...";
@@ -216,7 +215,7 @@ export const getStaticProps: GetStaticProps = async () => {
         createdAt: post.createdAt.toISOString(),
       })),
     },
-    revalidate: 60, // Revalidate every 60 seconds
+    revalidate: 60,
   };
 };
 

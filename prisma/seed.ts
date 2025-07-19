@@ -3,10 +3,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Delete existing posts
   await prisma.post.deleteMany();
 
-  // Create demo posts
   const post1 = await prisma.post.create({
     data: {
       title: "Welcome to My Blog!",

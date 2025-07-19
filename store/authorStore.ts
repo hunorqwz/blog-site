@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-// IndexedDB storage adapter
 const createIndexedDBStorage = () => {
   return {
     getItem: async (name: string): Promise<string | null> => {
@@ -106,7 +105,6 @@ interface AuthorState {
   updatePostsAuthor: (newName: string) => Promise<void>;
 }
 
-// Create the store with IndexedDB persistence
 export const useAuthorStore = create<AuthorState>()(
   persist(
     (set, get) => ({
@@ -136,7 +134,6 @@ export const useAuthorStore = create<AuthorState>()(
         try {
           const oldName = get().authorName;
 
-          // Update all posts with the old author name to the new name
           const response = await fetch("/api/posts/update-author", {
             method: "PUT",
             headers: {
@@ -162,18 +159,17 @@ export const useAuthorStore = create<AuthorState>()(
     {
       name: "author-storage",
       storage: createJSONStorage(() => createIndexedDBStorage()),
-      skipHydration: true, // Important for SSR
+      skipHydration: true,
     }
   )
 );
 
-// Hook to check if author name is set
 export const useAuthorName = () => {
   const { authorName, isInitialized, hideWelcomeDialog } = useAuthorStore();
 
   return {
     authorName: authorName || "Anonymous",
-    hasAuthorName: Boolean(authorName) && authorName !== "Anonymous",
+    hasAuthorName: Boolean(authorName),
     hideWelcomeDialog,
     isInitialized,
   };
